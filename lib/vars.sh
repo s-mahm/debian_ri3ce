@@ -1,6 +1,10 @@
-# Base
+# base
 EMAIL=soh.mahmood@tutanota.com
-GITURL_HTPPS="https://smahm:$TOKEN@github.com"
+if [ -z "$TOKEN" ]; then
+    GITURL="git@github.com:"
+else
+    GITURL="https://smahm:$TOKEN@github.com/"
+fi
 GITURL_SSH="git@github.com"
 
 # home related folders

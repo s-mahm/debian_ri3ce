@@ -69,6 +69,7 @@ apt_install \
     udevil \
     xclip \
     trash-cli \
+    pinentry-tty \
     pass \
     keychain \
     hstr \
@@ -121,6 +122,7 @@ apt_install \
 
 # application packages
 apt_install \
+    vim \
     libreoffice-base \
     gparted \
     firefox \

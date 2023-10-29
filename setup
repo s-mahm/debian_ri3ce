@@ -33,12 +33,12 @@ if [ $# -gt 0 ]; then
     cmd=$1
     shift
     case $cmd in
-    email)
-        . "${src_dir}/email.sh"
+    packages)
+        . "${src_dir}/packages.sh"
         ;;
     esac
 else
-    . "${src_dir}/packages.sh"
+    # . "${src_dir}/packages.sh"
     . "${src_dir}/xdg.sh"
-    . "${src_dir}/home.sh"
+    . "${src_dir}/auth.sh"
 fi
