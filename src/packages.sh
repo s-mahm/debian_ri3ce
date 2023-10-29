@@ -5,7 +5,7 @@ apt_install() {
     local ok
     for pkg in "$@"; do
         # shellcheck disable=SC1083
-        ok=$(dpkg-query --showformat=\${Version} --show "$pkg" 2>/dev/null || true)
+        ok=$(dpkg-query --showformat=\${Status} --show "$pkg" | grep "^install ok installed" 2>/dev/null || true)
         if [[ -z "$ok" ]]; then pkgs+=( "$pkg" ); fi
     done
     if (("${#pkgs[@]}")); then
@@ -54,6 +54,7 @@ apt_install \
 apt_install \
     nano \
     ufw \
+    scdoc \
     nvme-cli \
     ethtool \
     xdotool \
@@ -61,6 +62,7 @@ apt_install \
     wine \
     zip \
     p7zip \
+    gzip \
     unrar-free \
     ripgrep \
     ffmpegthumbnailer \
@@ -74,6 +76,10 @@ apt_install \
     keychain \
     hstr \
     fd-find \
+    xdg-user-dirs \
+    xdg-user-dirs-gtk \
+    xdg-utils \
+    desktop-file-utils \
     stow \
     ncdu \
     parallel \
@@ -91,6 +97,7 @@ apt_install \
     wpasupplicant \
     network-manager \
     wireless-tools \
+    ca-certificates \
     curl \
     wget \
     nmap
@@ -108,10 +115,8 @@ apt_install \
     xinit \
     light \
     lxappearance \
-    xdg-user-dirs \
-    xdg-user-dirs-gtk \
-    xdg-utils \
     screen \
+    redshift-gtk \
     imagemagick
 
 # audio packages
@@ -128,21 +133,31 @@ apt_install \
     firefox \
     qbittorrent \
     alacritty \
-    dconf-cli \
-    dconf-editor \
     sxiv \
-    redshift-gtk \
-    pasystray \
+    wine \
     gnome-keyring \
     seahorse \
-    xautolock \
     blueman \
-    polybar \
-    dunst \
     zathura
 
-# markup packages
+# rice packages
 apt_install \
+    i3 \
+    i3lock \
+    polybar \
+    rofi \
+    xautolock \
+    dunst \
+    dconf-cli \
+    dconf-editor \
+    pasystray
+
+# dev packages (more in dev.sh)
+apt_install \
+    python3 \
+    python3-venv \
+    python3-pip \
+    virtualbox \
     jq \
     yq \
     yamllint
@@ -173,4 +188,5 @@ apt_install \
     fonts-opensymbol \
     fonts-liberation
 
+# clean up lingering packages
 sudo apt-get -y autoremove

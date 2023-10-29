@@ -36,9 +36,19 @@ if [ $# -gt 0 ]; then
     packages)
         . "${src_dir}/packages.sh"
         ;;
+    xdg)
+        . "${src_dir}/xdg.sh"
+        ;;
+    auth)
+        . "${src_dir}/auth.sh"
+        ;;
+    dev)
+        . "${src_dir}/dev.sh"
+        ;;
     esac
 else
-    # . "${src_dir}/packages.sh"
+    . "${src_dir}/packages.sh"
     . "${src_dir}/xdg.sh"
     . "${src_dir}/auth.sh"
+    . "${src_dir}/dev.sh"
 fi
