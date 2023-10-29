@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+
+set -eu
+
+script_dir=$(dirname $(readlink -f $0))
+lib_dir=$script_dir/lib
+src_dir=$script_dir/src
+
+{
+    . "${lib_dir}/utils.sh"
+    . "${lib_dir}/getoptions.sh"
+    . "${lib_dir}/parser.sh"
+    . "${lib_dir}/vars.sh"
+}
+
+echo "FLAG: $FLAG, PARAM: $PARAM, OPTION: $OPTION, ARGS: $@"
+
+# check bash version
+if ((BASH_VERSINFO[0] < 5)); then
+    error '%s\n' "Error: This requires at least Bash v5.0 or higher. You have version $BASH_VERSION."
+fi
+
+# check internet connection
+if ! ping -q -c 1 -W 1 google.com >/dev/null; then
+    error "No internet connection"
+fi
+
+# prompt initial sudo
+sudo true
+
+# run src scripts
+if [ $# -gt 0 ]; then
+    cmd=$1
+    shift
+    case $cmd in
+    email)
+        . "${src_dir}/email.sh"
+        ;;
+    esac
+else
+    . "${src_dir}/packages.sh"
+    . "${src_dir}/xdg.sh"
+    . "${src_dir}/home.sh"
+fi
