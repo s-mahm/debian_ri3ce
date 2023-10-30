@@ -2,6 +2,7 @@
 mkdir -p $XDG_DATA_HOME
 mkdir -p $XDG_DATA_HOME/gnupg
 mkdir -p $XDG_DATA_HOME/python
+mkdir -p $XDG_DATA_HOME/npm
 mkdir -p $XDG_DATA_HOME/wine
 mkdir -p $XDG_DATA_HOME/terminfo
 mkdir -p $XDG_DATA_HOME/.pki
@@ -49,7 +50,7 @@ mkdir -p $MEDIA/pictures/screenshots
 mkdir -p $MEDIA/pictures/misc
 mkdir -p $MEDIA/videos
 
-# create office directory
+# create office (documents) directory
 mkdir -p $OFFICE
 mkdir -p $OFFICE/documents
 mkdir -p $OFFICE/misc
@@ -62,7 +63,6 @@ mkdir -p $APPLICATIONS
 
 # create .ssh directory
 mkdir -p $HOME/.ssh
-
 
 # set XDG global environment_variables
 sudo tee /etc/profile.d/xdg.sh >/dev/null <<EOF
@@ -142,15 +142,15 @@ EOF
 git -C $HOME/vault pull &>/dev/null || (rm -rf $HOME/vault && git clone ${GITURL}smahm-private/vault.git $HOME/vault)
 git -C $HOME/vault remote set-url origin ${GITURL_SSH}:smahm-private/vault.git
 
-# pull &>/dev/null latest cbins
+# pull latest cbins
 git -C /usr/local/cbins pull &>/dev/null || (sudo rm -rf /usr/local/cbins && git clone ${GITURL}smahm-private/cbins.git /tmp/cbins && sudo mv /tmp/cbins /usr/local/cbins)
 git -C /usr/local/cbins remote set-url origin ${GITURL_SSH}:smahm-private/cbins.git
 
-# pull &>/dev/null latest dotfiles
+# pull latest dotfiles
 git -C $HOME/.dotfiles pull &>/dev/null || (rm -rf $HOME/.dotfiles && git clone ${GITURL}smahm-private/.dotfiles.git $HOME/.dotfiles)
 git -C $HOME/.dotfiles remote set-url origin ${GITURL_SSH}:smahm-private/.dotfiles.git
 
-# pull &>/dev/null latest emacs
+# pull latest emacs
 git -C $XDG_CONFIG_HOME/emacs pull &>/dev/null || (rm -rf $XDG_CONFIG_HOME/emacs && git clone ${GITURL}s-mahm/emacs.git $XDG_CONFIG_HOME/emacs)
 git -C $XDG_CONFIG_HOME/emacs remote set-url origin ${GITURL_SSH}:s-mahm/emacs.git
 

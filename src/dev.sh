@@ -79,6 +79,14 @@ else
     rustup update stable
 fi
 
+####################
+# LANGUAGE SERVERS #
+####################
+npm config set prefix "${XDG_DATA_HOME}/npm"
+npm i -g bash-language-server
+npm i -g yaml-language-server
+npm i -g vls
+
 ##########
 # DOCKER #
 ##########

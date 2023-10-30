@@ -6,8 +6,7 @@ VERSION="1.0.0"
 parser_definition() {
   setup   REST help:usage -- "Usage: setup [options]... [arguments]..." ''
   msg -- 'Options:'
-  flag    CLEAN   -c --clean                 -- "clean up file prior to execution"
-  param   TOKEN   -t --token                 -- "takes one argument"
+  param   TOKEN   -t --token                 -- "github token to clone repositories"
   disp    :usage  -h --help
   disp    VERSION    --version
 }
