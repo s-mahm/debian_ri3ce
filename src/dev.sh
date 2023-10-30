@@ -53,6 +53,7 @@ go_current=$(go version | grep -Po '\d+\.\d+\.\d+' || true)
 
 # install latest go if not latest
 if ! [ $(version $go_current) -ge $(version $go_latest) ]; then
+    rm -rf $WORKSTATION/architecture/toolchains/go
     wget https://go.dev/dl/go${go_latest}.linux-amd64.tar.gz -P $WORKSTATION/architecture/toolchains/
     cd $WORKSTATION/architecture/toolchains
     tar -xf go*.tar.gz

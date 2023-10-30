@@ -31,7 +31,8 @@ for key in *; do
     sudo chmod 0600 $HOME/.ssh/$key.pri
     # public key
     pass ssh/$key/public > $HOME/.ssh/$key.pub
-    sudo chmod 0644 $HOME/.ssh/$key.pri
+    sudo chmod 0600 $HOME/.ssh/$key.pri
+    sudo chmod 0644 $HOME/.ssh/$key.pub
     # store password in keychain
     echo "$(pass ssh/$key/password)" | eval $(keychain --eval --agents ssh $HOME/.ssh/$key.pri)
 done

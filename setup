@@ -13,8 +13,6 @@ src_dir=$script_dir/src
     . "${lib_dir}/vars.sh"
 }
 
-echo "FLAG: $FLAG, PARAM: $PARAM, OPTION: $OPTION, ARGS: $@"
-
 # check bash version
 if ((BASH_VERSINFO[0] < 5)); then
     error '%s\n' "Error: This requires at least Bash v5.0 or higher. You have version $BASH_VERSION."
@@ -45,10 +43,22 @@ if [ $# -gt 0 ]; then
     dev)
         . "${src_dir}/dev.sh"
         ;;
+    email)
+        . "${src_dir}/email.sh"
+        ;;
+    env)
+        . "${src_dir}/env.sh"
+        ;;
+    purge)
+        . "${src_dir}/purge.sh"
+        ;;
     esac
 else
     . "${src_dir}/packages.sh"
     . "${src_dir}/xdg.sh"
     . "${src_dir}/auth.sh"
     . "${src_dir}/dev.sh"
+    . "${src_dir}/email.sh"
+    . "${src_dir}/env.sh"
+    . "${src_dir}/purge.sh"
 fi

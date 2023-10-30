@@ -121,9 +121,8 @@ apt_install \
 
 # audio packages
 apt_install \
-    pulseaudio-utils \
-    pavucontrol \
-    pipewire
+    wireplumber \
+    pipewire-pulse \
 
 # application packages
 apt_install \
@@ -132,7 +131,6 @@ apt_install \
     gparted \
     firefox \
     qbittorrent \
-    alacritty \
     sxiv \
     wine \
     gnome-keyring \
@@ -186,6 +184,8 @@ apt_install \
     fonts-font-awesome \
     fonts-lato \
     fonts-opensymbol \
+    fonts-hack-ttf \
+    fonts-font-awesome \
     fonts-liberation
 
 # clean up lingering packages

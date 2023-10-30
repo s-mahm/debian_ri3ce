@@ -4,6 +4,7 @@ mkdir -p $XDG_DATA_HOME/gnupg
 mkdir -p $XDG_DATA_HOME/python
 mkdir -p $XDG_DATA_HOME/wine
 mkdir -p $XDG_DATA_HOME/terminfo
+mkdir -p $XDG_DATA_HOME/.pki
 mkdir -p $XDG_CONFIG_HOME
 mkdir -p $XDG_CONFIG_HOME/X11
 mkdir -p $XDG_CONFIG_HOME/wgetrc
@@ -138,19 +139,19 @@ init-module=$XDG_CONFIG_HOME/npm/config/npm-init.js
 EOF
 
 # pull latest vault
-git -C $HOME/vault pull &>/dev/null || rm -rf $HOME/vault && git clone ${GITURL}smahm-private/vault.git $HOME/vault
+git -C $HOME/vault pull &>/dev/null || (rm -rf $HOME/vault && git clone ${GITURL}smahm-private/vault.git $HOME/vault)
 git -C $HOME/vault remote set-url origin ${GITURL_SSH}:smahm-private/vault.git
 
 # pull &>/dev/null latest cbins
-git -C /usr/local/cbins pull &>/dev/null || sudo rm -rf /usr/local/cbins && git clone ${GITURL}smahm-private/cbins.git /tmp/cbins && sudo mv /tmp/cbins /usr/local/cbins
+git -C /usr/local/cbins pull &>/dev/null || (sudo rm -rf /usr/local/cbins && git clone ${GITURL}smahm-private/cbins.git /tmp/cbins && sudo mv /tmp/cbins /usr/local/cbins)
 git -C /usr/local/cbins remote set-url origin ${GITURL_SSH}:smahm-private/cbins.git
 
 # pull &>/dev/null latest dotfiles
-git -C $HOME/.dotfiles pull &>/dev/null || rm -rf $HOME/.dotfiles && git clone ${GITURL}smahm-private/.dotfiles.git $HOME/.dotfiles
+git -C $HOME/.dotfiles pull &>/dev/null || (rm -rf $HOME/.dotfiles && git clone ${GITURL}smahm-private/.dotfiles.git $HOME/.dotfiles)
 git -C $HOME/.dotfiles remote set-url origin ${GITURL_SSH}:smahm-private/.dotfiles.git
 
 # pull &>/dev/null latest emacs
-git -C $XDG_CONFIG_HOME/emacs pull &>/dev/null || rm -rf $XDG_CONFIG_HOME/emacs && git clone ${GITURL}s-mahm/emacs.git $XDG_CONFIG_HOME/emacs
+git -C $XDG_CONFIG_HOME/emacs pull &>/dev/null || (rm -rf $XDG_CONFIG_HOME/emacs && git clone ${GITURL}s-mahm/emacs.git $XDG_CONFIG_HOME/emacs)
 git -C $XDG_CONFIG_HOME/emacs remote set-url origin ${GITURL_SSH}:s-mahm/emacs.git
 
 # symlink all dotfiles
@@ -160,8 +161,3 @@ if ! stow * &>/dev/null; then
     for dir in $dirs; do rm -rf $HOME/$dir; done
     stow *
 fi
-
-# set default wallpaper
-# if ! [ -z "$TOKEN" ]; then
-#     wget https://i.imgur.com/NEO3Shg.jpg -o $MEDIA/pictures/wallpapers/currentwallpaper.jpg
-# fi
