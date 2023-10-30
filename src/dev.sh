@@ -117,8 +117,10 @@ sudo apt-get update
 # install vagrant
 sudo apt install -y vagrant
 
-# clean up lingering packages
-sudo apt-get -y autoremove
+# start virtualbox service
+if ! sudo systemctl start virtualbox; then
+    sudo apt install --reinstall linux-headers-$(uname -r) virtualbox-dkms dkms
+fi
 
 #########
 # EMACS #
@@ -198,3 +200,6 @@ if ! [ $(version $(alacritty --version | grep -Po '\d+\.\d+\.\d+' || true)) -ge 
     # shell completions
     mv extra/completions/alacritty.bash ~/.dotfiles/bash/.local/state/bash/bash_completions/alacritty
 fi
+
+# clean up lingering packages
+sudo apt-get -y autoremove

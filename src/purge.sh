@@ -91,6 +91,7 @@ keep_xdg_data=(
     "keyrings"
     "nano"
     "npm"
+    "terminfo"
     ".pki"
     "python"
     "qBittorrent"
