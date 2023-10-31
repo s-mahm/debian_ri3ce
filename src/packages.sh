@@ -155,6 +155,7 @@ apt_install \
     python3 \
     python3-venv \
     python3-pip \
+    clangd \
     virtualbox \
     jq \
     yq \
