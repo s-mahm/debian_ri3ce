@@ -105,7 +105,6 @@ apt_install \
 # power packages
 apt_install \
     acpi \
-    xfce4-power-manager \
     tlp
 
 # display packages

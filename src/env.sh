@@ -100,3 +100,31 @@ sudo sed -i "s/#\$nrconf{restart} = 'i';/\$nrconf{restart} = 'a';/" /etc/needres
 sudo tee /etc/sudoers.d/disable_admin_file_in_home >/dev/null <<EOF
 Defaults !admin_flag
 EOF
+
+# Enable suspend on lid close
+sudo sed -i 's/#HandleLidSwitch=suspend/HandleLidSwitch=suspend/' /etc/systemd/logind.conf
+sudo sed -i 's/#HandleLidSwitchExternalPower=suspend/HandleLidSwitchExternalPower=suspend/' /etc/systemd/logind.conf
+sudo sed -i 's/#HandleLidSwitchDocked=ignore/HandleLidSwitchDocked=ignore/' /etc/systemd/logind.conf
+sudo sed -i 's/#LidSwitchIgnoreInhibited=yes/LidSwitchIgnoreInhibited=yes/' /etc/systemd/logind.conf
+
+# Add locking before suspend
+sudo tee /etc/systemd/system/suspend@root.service >/dev/null <<EOF
+[Unit]
+etc/systemd/system/suspend@.service
+
+[Unit]
+Description=User suspend actions
+Before=sleep.target
+
+[Service]
+User=smahm
+Type=forking
+Environment=DISPLAY=:0
+ExecStart=-/usr/local/cbins/blurlock
+ExecStartPost=/usr/bin/sleep 1
+
+[Install]
+WantedBy=sleep.target
+EOF
+
+sudo systemctl enable suspend@root.service
