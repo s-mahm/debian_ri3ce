@@ -43,6 +43,25 @@ if [ $# -gt 0 ]; then
     dev)
         . "${src_dir}/dev.sh"
         ;;
+    apps)
+			eval "$(getoptions parser_definition_apps parse "$0")"
+			parse "$@"
+			if [ $# -gt 0 ]; then
+				cmd=$1
+				shift
+				case $cmd in
+					emacs)
+                        . "${src_dir}/apps.sh" emacs
+                        ;;
+                    alacritty)
+                        . "${src_dir}/apps.sh" alacritty
+                        ;;
+				esac
+            else
+                # . "${src_dir}/apps.sh"
+                echo $()
+			fi
+			;;
     email)
         . "${src_dir}/email.sh"
         ;;
@@ -58,6 +77,7 @@ else
     . "${src_dir}/xdg.sh"
     . "${src_dir}/auth.sh"
     . "${src_dir}/dev.sh"
+    . "${src_dir}/apps.sh"
     . "${src_dir}/email.sh"
     . "${src_dir}/env.sh"
     . "${src_dir}/purge.sh"

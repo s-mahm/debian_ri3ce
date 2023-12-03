@@ -25,6 +25,7 @@ sudo apt-get -y upgrade
 # base packages
 apt_install \
      build-essential \
+     linux-headers-$(uname -r) \
      software-properties-common \
      cmake \
      dkms \
@@ -155,7 +156,10 @@ apt_install \
     python3-venv \
     python3-pip \
     clangd \
+    enchant-2 \
     virtualbox \
+    virtualbox-ext-pack \
+    virtualbox-dkms \
     jq \
     yq \
     yamllint

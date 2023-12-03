@@ -1,4 +1,6 @@
 # install latest tutanota email client
+killall tutanota-desktop || killall tutanota || true
+rm $APPLICATIONS/tutanota-*.AppImage
 wget https://mail.tutanota.com/desktop/tutanota-desktop-linux.AppImage -P $HOME/apps
 sudo chmod +x $HOME/apps/tutanota-desktop-linux.AppImage
 sudo ln -sf $HOME/apps/tutanota-desktop-linux.AppImage /usr/local/bin/tutanota

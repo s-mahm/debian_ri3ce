@@ -2,13 +2,31 @@
 
 VERSION="1.0.0"
 
-# shellcheck disable=SC1083
+global_options() {
+    flag  FORCE   -f --force -- "force install applicatons"
+    param TOKEN   -t --token -- "github token to clone repositories"
+	disp :usage  -h --help
+	disp VERSION    --version
+}
+
 parser_definition() {
-  setup   REST help:usage -- "Usage: setup [options]... [arguments]..." ''
-  msg -- 'Options:'
-  param   TOKEN   -t --token                 -- "github token to clone repositories"
-  disp    :usage  -h --help
-  disp    VERSION    --version
+    setup   REST help:usage -- "Usage: setup [options]... [arguments]..." ''
+    msg -- 'Options:'
+    global_options
+
+    msg -- '' 'Commands:'
+    cmd dev  -- "install different development"
+    cmd apps -- "install different applications"
+}
+
+# shellcheck disable=SC1083
+parser_definition_apps() {
+    setup   REST help:usage -- "Usage: apps [options]... [arguments]..." ''
+    disp :usage  -h --help
+
+    msg -- '' 'Commands:'
+    cmd emacs  -- "install emacs editor"
+    cmd alacritty -- "install alacritty terminal"
 }
 
 eval "$(getoptions parser_definition parse "$0") exit 1"

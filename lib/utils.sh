@@ -22,12 +22,16 @@ DEFAULT="${ESC}[39m"
 
 ### Color Functions ##
 
-success() {
-    printf "${GREEN}%s${RESET}\n" "$1"
+info() {
+    printf "${WHITE}INFO:  %s${RESET}\n" "$1"
 }
 
-blueprint() {
-    printf "${BLUE}%s${RESET}\n" "$1"
+warn() {
+    printf "${YELLOW}WARNING: %s${RESET}\n" "$1"
+}
+
+success() {
+    printf "${GREEN}%s${RESET}\n" "$1"
 }
 
 error() {
@@ -35,14 +39,16 @@ error() {
     exit 1
 }
 
-warn() {
-    printf "${YELLOW}WARNING: %s${RESET}\n" "$1"
+version() {
+    echo "$@" | awk -F. '{ printf("%d%03d%03d%03d\n", $1,$2,$3,$4); }';
 }
 
-magentaprint() {
-    printf "${MAGENTA}%s${RESET}\n" "$1"
+functions_list() {
+  result=$(cat $src_dir/$1.sh | grep -Po $1_\\w+ | tr '\n' '|')
+  echo "${result::-1}"
 }
 
-cyanprint() {
-    printf "${CYAN}%s${RESET}\n" "$1"
+download_latest_release() {
+  info "running curl --silent \"https://api.github.com/repos/$1/releases/latest\" | grep -Po \"$2\" | grep download"
+  echo "https://github.com/$(curl --silent https://api.github.com/repos/$1/releases/latest | grep -Po $2 | grep download)"
 }
