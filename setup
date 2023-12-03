@@ -54,7 +54,7 @@ if [ $# -gt 0 ]; then
                         ;;
 				esac"
 		else
-				echo "running . ${src_dir}/dev.sh"
+				. ${src_dir}/dev.sh
 		fi
 		;;
 	apps)
@@ -87,7 +87,6 @@ else
 	. "${src_dir}/auth.sh"
 	. "${src_dir}/dev.sh"
 	. "${src_dir}/apps.sh"
-	. "${src_dir}/email.sh"
 	. "${src_dir}/env.sh"
 	. "${src_dir}/purge.sh"
 fi

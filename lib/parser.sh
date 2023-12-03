@@ -3,7 +3,7 @@
 VERSION="1.0.0"
 
 global_options() {
-    flag  FORCE   -f --force -- "force install applicatons"
+    flag  FORCE   -f --force -- "force install"
     param TOKEN   -t --token -- "github token to clone repositories"
 	disp :usage  -h --help
 	disp VERSION -v --version
@@ -15,8 +15,13 @@ parser_definition() {
     global_options
 
     msg -- '' 'Commands:'
-    cmd apps -- "install different applications"
-    cmd dev  -- "install different development"
+    cmd apps -- "install user applications"
+    cmd auth -- "maintain gpg/ssh keys and settings"
+    cmd dev  -- "install development languages and toolchains"
+    cmd env -- "configure environment for i3wm"
+    cmd packages  -- "update required packages to latest"
+    cmd puge  -- "remove any unwanted directories"
+    cmd xdg -- "ensure xdg directories and github repos exist"
 }
 
 # shellcheck disable=SC1083

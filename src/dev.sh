@@ -104,4 +104,10 @@ EOF
 	fi
 }
 
-dev_$1 $@
+if [ $# -gt 0 ]; then
+	dev_$1 $@
+else
+	for cmd in $(function_list_parser dev); do
+		dev_$cmd
+	done
+fi

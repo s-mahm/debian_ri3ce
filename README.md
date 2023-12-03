@@ -4,21 +4,35 @@ This repository was created to streamline setting up a new machine with debian O
 
 ## Usage
 
-``` shell
-# List all available CLI options
+``` text
 ./setup --help
 Usage: setup [options]... [arguments]...
 
 Options:
+  -f, --force                 force install
   -t, --token TOKEN           github token to clone repositories
   -h, --help
-      --version
-Arguments:
-    packages - maintain required packages and updates
-    xdg - conform directories to XDG specification
-    auth - retrieve .ssh and gpg keys from vault
-    dev - setup development environment
-    email - download tutanota email appimage
-    env - ricing configuration + sensible fixes for i3wm
-    purge - remove all directories to conforming to XDG
+  -v, --version
+
+Commands:
+  apps      install user applications
+  auth      maintain gpg/ssh keys and settings
+  dev       install development languages and toolchains
+  env       configure environment for i3wm
+  packages  update required packages to latest
+  puge      remove any unwanted directories
+  xdg       ensure xdg directories and github repos exist
+```
+
+### Subcommands
+Commands can include sub-commands that are automatically generated from the functions in the script associated with the command found in the "src" directory.
+
+For example the command apps has sub-commands based on the functions in the script "src/apps.sh"
+``` text
+Usage: setup apps [options...] [arguments...]
+  -h, --help
+
+Commands:
+  alacritty
+  emacs
 ```
