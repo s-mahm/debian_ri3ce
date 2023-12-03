@@ -82,7 +82,7 @@ if test -z "\${XDG_RUNTIME_DIR}"; then
      fi
  fi
 EOF
-sudo chmod 0644  /etc/profile.d/xdg.sh
+sudo chmod 0644 /etc/profile.d/xdg.sh
 
 # set user-dirs
 tee $XDG_CONFIG_HOME/user-dirs.dirs >/dev/null <<EOF
@@ -116,7 +116,7 @@ git -C $XDG_CONFIG_HOME/emacs remote set-url origin ${GITURL_SSH}:s-mahm/emacs.g
 # symlink all dotfiles
 cd $HOME/.dotfiles
 if ! stow * &>/dev/null; then
-    dirs=$(stow * 2>&1 | grep "existing target is neither a link nor a directory:" | sed 's/^.*: //')
-    for dir in $dirs; do rm -rf $HOME/$dir; done
-    stow *
+	dirs=$(stow * 2>&1 | grep "existing target is neither a link nor a directory:" | sed 's/^.*: //')
+	for dir in $dirs; do rm -rf $HOME/$dir; done
+	stow *
 fi

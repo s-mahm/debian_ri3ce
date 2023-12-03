@@ -3,38 +3,38 @@ sudo mkdir -p /usr/share/fonts
 
 # install feather fonts if absent
 if ! fc-list | grep feather; then
-    sudo mkdir -p /usr/share/fonts/feather
-    rm -rf /tmp/featherfont
-    git clone https://github.com/AT-UI/feather-font /tmp/featherfont
-    sudo mv /tmp/featherfont/src/fonts/feather.ttf /usr/share/fonts/feather
-    fc-cache -f -v &>/dev/null
+	sudo mkdir -p /usr/share/fonts/feather
+	rm -rf /tmp/featherfont
+	git clone https://github.com/AT-UI/feather-font /tmp/featherfont
+	sudo mv /tmp/featherfont/src/fonts/feather.ttf /usr/share/fonts/feather
+	fc-cache -f -v &>/dev/null
 fi
 
 # install menlo font if absent
 if ! fc-list | grep menlo; then
-    sudo mkdir -p /usr/share/fonts/menlo
-    rm -rf /tmp/featherfont
-    git clone https://github.com/hbin/top-programming-fonts.git /tmp/menlo
-    sudo mv /tmp/menlo/Menlo-Regular.ttf /usr/share/fonts/menlo
-    fc-cache -f -v &>/dev/null
+	sudo mkdir -p /usr/share/fonts/menlo
+	rm -rf /tmp/featherfont
+	git clone https://github.com/hbin/top-programming-fonts.git /tmp/menlo
+	sudo mv /tmp/menlo/Menlo-Regular.ttf /usr/share/fonts/menlo
+	fc-cache -f -v &>/dev/null
 fi
 
 # install papirus icons if absent
 if ! ls /usr/share/icons | grep Papirus; then
-   wget -qO- https://git.io/papirus-icon-theme-install | sh
+	wget -qO- https://git.io/papirus-icon-theme-install | sh
 fi
 
 # install phinger-cursor if absent
 if ! ls /usr/share/icons | grep phinger-cursors; then
-    wget -cO- https://github.com/phisch/phinger-cursors/releases/latest/download/phinger-cursors-variants.tar.bz2 | sudo tar -xjf - -C /usr/share/icons/
+	wget -cO- https://github.com/phisch/phinger-cursors/releases/latest/download/phinger-cursors-variants.tar.bz2 | sudo tar -xjf - -C /usr/share/icons/
 fi
 
 # install equilix theme if absent
 if ! ls /usr/share/themes | grep Equilux; then
-    sudo rm -rf /tmp/equilux*
-    wget -cO- https://github.com/ddnexus/equilux-theme/archive/refs/tags/equilux-v20181029.tar.gz | sudo tar -xzf - -C /tmp/
-    cd /tmp/equilux*
-    sudo bash install.sh
+	sudo rm -rf /tmp/equilux*
+	wget -cO- https://github.com/ddnexus/equilux-theme/archive/refs/tags/equilux-v20181029.tar.gz | sudo tar -xzf - -C /tmp/
+	cd /tmp/equilux*
+	sudo bash install.sh
 fi
 
 # set gtk theme settings
@@ -59,7 +59,7 @@ EOF
 
 # set default wallpaper
 if ! [ -z "$TOKEN" ]; then
-    wget -q https://i.imgur.com/NEO3Shg.jpg -O $MEDIA/pictures/wallpapers/currentwallpaper.jpg
+	wget -q https://i.imgur.com/NEO3Shg.jpg -O $MEDIA/pictures/wallpapers/currentwallpaper.jpg
 fi
 
 # change battery start charge threshold

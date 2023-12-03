@@ -6,7 +6,7 @@ global_options() {
     flag  FORCE   -f --force -- "force install applicatons"
     param TOKEN   -t --token -- "github token to clone repositories"
 	disp :usage  -h --help
-	disp VERSION    --version
+	disp VERSION -v --version
 }
 
 parser_definition() {
@@ -15,18 +15,38 @@ parser_definition() {
     global_options
 
     msg -- '' 'Commands:'
-    cmd dev  -- "install different development"
     cmd apps -- "install different applications"
+    cmd dev  -- "install different development"
 }
 
 # shellcheck disable=SC1083
 parser_definition_apps() {
-    setup   REST help:usage -- "Usage: apps [options]... [arguments]..." ''
+	setup   REST help:usage abbr:true -- \
+		"Usage: ${2##*/} apps [options...] [arguments...]"
     disp :usage  -h --help
 
     msg -- '' 'Commands:'
-    cmd emacs  -- "install emacs editor"
-    cmd alacritty -- "install alacritty terminal"
+    commands=""
+    newline=$'\n'
+    while IFS= read -r line; do
+        commands+="cmd $line $newline"
+    done < <(function_list_parser apps)
+    eval "$commands"
+}
+
+# shellcheck disable=SC1083
+parser_definition_dev() {
+	setup   REST help:usage abbr:true -- \
+		"Usage: ${2##*/} dev [options...] [arguments...]"
+    disp :usage  -h --help
+
+    msg -- '' 'Commands:'
+    commands=""
+    newline=$'\n'
+    while IFS= read -r line; do
+        commands+="cmd $line $newline"
+    done < <(function_list_parser dev)
+    eval "$commands"
 }
 
 eval "$(getoptions parser_definition parse "$0") exit 1"

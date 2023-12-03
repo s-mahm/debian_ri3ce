@@ -7,20 +7,20 @@ lib_dir=$script_dir/lib
 src_dir=$script_dir/src
 
 {
-    . "${lib_dir}/utils.sh"
-    . "${lib_dir}/getoptions.sh"
-    . "${lib_dir}/parser.sh"
-    . "${lib_dir}/vars.sh"
+	. "${lib_dir}/utils.sh"
+	. "${lib_dir}/getoptions.sh"
+	. "${lib_dir}/parser.sh"
+	. "${lib_dir}/vars.sh"
 }
 
 # check bash version
 if ((BASH_VERSINFO[0] < 5)); then
-    error '%s\n' "Error: This requires at least Bash v5.0 or higher. You have version $BASH_VERSION."
+	error '%s\n' "Error: This requires at least Bash v5.0 or higher. You have version $BASH_VERSION."
 fi
 
 # check internet connection
 if ! ping -q -c 1 -W 1 google.com >/dev/null; then
-    error "No internet connection"
+	error "No internet connection"
 fi
 
 # prompt initial sudo
@@ -28,57 +28,66 @@ sudo true
 
 # run src scripts
 if [ $# -gt 0 ]; then
-    cmd=$1
-    shift
-    case $cmd in
-    packages)
-        . "${src_dir}/packages.sh"
-        ;;
-    xdg)
-        . "${src_dir}/xdg.sh"
-        ;;
-    auth)
-        . "${src_dir}/auth.sh"
-        ;;
-    dev)
-        . "${src_dir}/dev.sh"
-        ;;
-    apps)
-			eval "$(getoptions parser_definition_apps parse "$0")"
-			parse "$@"
-			if [ $# -gt 0 ]; then
-				cmd=$1
-				shift
-				case $cmd in
-					emacs)
-                        . "${src_dir}/apps.sh" emacs
+	cmd=$1
+	shift
+	case $cmd in
+	packages)
+		. "${src_dir}/packages.sh"
+		;;
+	xdg)
+		. "${src_dir}/xdg.sh"
+		;;
+	auth)
+		. "${src_dir}/auth.sh"
+		;;
+	dev)
+		eval "$(getoptions parser_definition_dev parse "$0")"
+		parse "$@"
+		eval "set -- $REST"
+		dev_functions="$(function_list_case dev)"
+		if [ $# -gt 0 ]; then
+			cmd=$1
+			shift
+			eval "case $cmd in
+					$dev_functions)
+                        . ${src_dir}/dev.sh $cmd
                         ;;
-                    alacritty)
-                        . "${src_dir}/apps.sh" alacritty
+				esac"
+		else
+				echo "running . ${src_dir}/dev.sh"
+		fi
+		;;
+	apps)
+		eval "$(getoptions parser_definition_apps parse "$0")"
+		parse "$@"
+		eval "set -- $REST"
+		app_functions="$(function_list_case apps)"
+		if [ $# -gt 0 ]; then
+			cmd=$1
+			shift
+			eval "case $cmd in
+					$app_functions)
+                        . ${src_dir}/apps.sh $cmd
                         ;;
-				esac
-            else
-                # . "${src_dir}/apps.sh"
-                echo $()
-			fi
-			;;
-    email)
-        . "${src_dir}/email.sh"
-        ;;
-    env)
-        . "${src_dir}/env.sh"
-        ;;
-    purge)
-        . "${src_dir}/purge.sh"
-        ;;
-    esac
+				esac"
+		else
+			. ${src_dir}/apps.sh
+		fi
+		;;
+	env)
+		. "${src_dir}/env.sh"
+		;;
+	purge)
+		. "${src_dir}/purge.sh"
+		;;
+	esac
 else
-    . "${src_dir}/packages.sh"
-    . "${src_dir}/xdg.sh"
-    . "${src_dir}/auth.sh"
-    . "${src_dir}/dev.sh"
-    . "${src_dir}/apps.sh"
-    . "${src_dir}/email.sh"
-    . "${src_dir}/env.sh"
-    . "${src_dir}/purge.sh"
+	. "${src_dir}/packages.sh"
+	. "${src_dir}/xdg.sh"
+	. "${src_dir}/auth.sh"
+	. "${src_dir}/dev.sh"
+	. "${src_dir}/apps.sh"
+	. "${src_dir}/email.sh"
+	. "${src_dir}/env.sh"
+	. "${src_dir}/purge.sh"
 fi

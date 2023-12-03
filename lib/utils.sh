@@ -43,12 +43,24 @@ version() {
     echo "$@" | awk -F. '{ printf("%d%03d%03d%03d\n", $1,$2,$3,$4); }';
 }
 
-functions_list() {
-  result=$(cat $src_dir/$1.sh | grep -Po $1_\\w+ | tr '\n' '|')
+function_list_parser() {
+  result=$(cat $src_dir/$1.sh | grep -Po $1_\\w+ | sed "s|$1_||g" | sort)
+  echo "${result}"
+}
+
+function_list_case() {
+  result=$(cat $src_dir/$1.sh | grep -Po $1_\\w+ | sed "s|$1_||g" | sort | tr '\n' '|')
   echo "${result::-1}"
 }
 
+latest_release() {
+    curl --silent "https://api.github.com/repos/$1/releases/latest" | grep -Po "(?<=\"tag_name\": \").*(?=\")"
+}
+
 download_latest_release() {
-  info "running curl --silent \"https://api.github.com/repos/$1/releases/latest\" | grep -Po \"$2\" | grep download"
   echo "https://github.com/$(curl --silent https://api.github.com/repos/$1/releases/latest | grep -Po $2 | grep download)"
+}
+
+latest_stable_debian() {
+    curl -sL http://ftp.fi.debian.org/debian/dists/stable/Release | grep Codename: | sed 's/^.*: //'
 }
