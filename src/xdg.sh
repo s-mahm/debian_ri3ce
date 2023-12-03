@@ -1,3 +1,4 @@
+xdg_dir() {
 # create xdg directories
 mkdir -p $XDG_DATA_HOME
 mkdir -p $XDG_DATA_HOME/gnupg
@@ -96,27 +97,38 @@ XDG_PICTURES_DIR="$MEDIA/pictures"
 XDG_VIDEOS_DIR="$MEDIA/videos"
 EOF
 xdg-user-dirs-update
+}
 
-# pull latest vault
+xdg_vault() {
 git -C $HOME/vault pull &>/dev/null || (rm -rf $HOME/vault && git clone ${GITURL}smahm-private/vault.git $HOME/vault)
 git -C $HOME/vault remote set-url origin ${GITURL_SSH}:smahm-private/vault.git
+}
 
-# pull latest cbins
+xdg_cbins() {
 git -C /usr/local/cbins pull &>/dev/null || (sudo rm -rf /usr/local/cbins && git clone ${GITURL}smahm-private/cbins.git /tmp/cbins && sudo mv /tmp/cbins /usr/local/cbins)
 git -C /usr/local/cbins remote set-url origin ${GITURL_SSH}:smahm-private/cbins.git
-
-# pull latest dotfiles
+}
+xdg_dotfiles() {
 git -C $HOME/.dotfiles pull &>/dev/null || (rm -rf $HOME/.dotfiles && git clone ${GITURL}smahm-private/.dotfiles.git $HOME/.dotfiles)
 git -C $HOME/.dotfiles remote set-url origin ${GITURL_SSH}:smahm-private/.dotfiles.git
-
-# pull latest emacs
-git -C $XDG_CONFIG_HOME/emacs pull &>/dev/null || (rm -rf $XDG_CONFIG_HOME/emacs && git clone ${GITURL}s-mahm/emacs.git $XDG_CONFIG_HOME/emacs)
-git -C $XDG_CONFIG_HOME/emacs remote set-url origin ${GITURL_SSH}:s-mahm/emacs.git
-
 # symlink all dotfiles
 cd $HOME/.dotfiles
 if ! stow * &>/dev/null; then
 	dirs=$(stow * 2>&1 | grep "existing target is neither a link nor a directory:" | sed 's/^.*: //')
 	for dir in $dirs; do rm -rf $HOME/$dir; done
 	stow *
+fi
+}
+xdg_emacs() {
+# pull latest emacs
+git -C $XDG_CONFIG_HOME/emacs pull &>/dev/null || (rm -rf $XDG_CONFIG_HOME/emacs && git clone ${GITURL}s-mahm/emacs.git $XDG_CONFIG_HOME/emacs)
+git -C $XDG_CONFIG_HOME/emacs remote set-url origin ${GITURL_SSH}:s-mahm/emacs.git
+}
+
+if [ $# -gt 0 ]; then
+	xdg_$1 $@
+else
+	for cmd in $(function_list_parser xdg); do
+		xdg_$cmd
+	done
 fi

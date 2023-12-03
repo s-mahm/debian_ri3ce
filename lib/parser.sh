@@ -54,6 +54,21 @@ parser_definition_dev() {
     eval "$commands"
 }
 
+# shellcheck disable=SC1083
+parser_definition_xdg() {
+	setup   REST help:usage abbr:true -- \
+		"Usage: ${2##*/} xdg [options...] [arguments...]"
+    disp :usage  -h --help
+
+    msg -- '' 'Commands:'
+    commands=""
+    newline=$'\n'
+    while IFS= read -r line; do
+        commands+="cmd $line $newline"
+    done < <(function_list_parser xdg)
+    eval "$commands"
+}
+
 eval "$(getoptions parser_definition parse "$0") exit 1"
 parse "$@"
 eval "set -- $REST"
