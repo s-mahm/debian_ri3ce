@@ -37,7 +37,6 @@ mkdir -p $WORKSTATION/architecture/toolchains
 mkdir -p $WORKSTATION/architecture/toolchains/rust
 mkdir -p $WORKSTATION/architecture/virtualmachines
 mkdir -p $WORKSTATION/architecture/virtualmachines/vagrant
-mkdir -p $WORKSTATION/architecture/virtualmachines/virtualbox
 
 # create dump (downloads) directory
 mkdir -p $DUMP
@@ -99,30 +98,26 @@ EOF
 xdg-user-dirs-update
 }
 
-xdg_vault() {
-git -C $HOME/vault pull &>/dev/null || (rm -rf $HOME/vault && git clone ${GITURL}smahm-private/vault.git $HOME/vault)
-git -C $HOME/vault remote set-url origin ${GITURL_SSH}:smahm-private/vault.git
+xdg_cbins() {
+    git -C /usr/local/cbins pull &>/dev/null || (sudo rm -rf /usr/local/cbins && git clone ${GITURL}smahm006-private/cbins.git /tmp/cbins && sudo mv /tmp/cbins /usr/local/cbins)
+    git -C /usr/local/cbins remote set-url origin ${GITURL_SSH}:smahm006-private/cbins.git
 }
 
-xdg_cbins() {
-git -C /usr/local/cbins pull &>/dev/null || (sudo rm -rf /usr/local/cbins && git clone ${GITURL}smahm-private/cbins.git /tmp/cbins && sudo mv /tmp/cbins /usr/local/cbins)
-git -C /usr/local/cbins remote set-url origin ${GITURL_SSH}:smahm-private/cbins.git
-}
 xdg_dotfiles() {
-git -C $HOME/.dotfiles pull &>/dev/null || (rm -rf $HOME/.dotfiles && git clone ${GITURL}smahm-private/.dotfiles.git $HOME/.dotfiles)
-git -C $HOME/.dotfiles remote set-url origin ${GITURL_SSH}:smahm-private/.dotfiles.git
-# symlink all dotfiles
-cd $HOME/.dotfiles
-if ! stow * &>/dev/null; then
-	dirs=$(stow * 2>&1 | grep "existing target is neither a link nor a directory:" | sed 's/^.*: //')
-	for dir in $dirs; do rm -rf $HOME/$dir; done
-	stow *
-fi
+    set -e
+    git -C $HOME/.dotfiles pull &>/dev/null || (rm -rf $HOME/.dotfiles && git clone ${GITURL}smahm006-private/.dotfiles.git $HOME/.dotfiles)
+    git -C $HOME/.dotfiles remote set-url origin ${GITURL_SSH}:smahm006-private/.dotfiles.git
+    cd $HOME/.dotfiles
+    if ! stow * &>/dev/null; then
+	    dirs=$(stow * 2>&1 | grep "existing target is neither a link nor a directory:" | sed 's/^.*: //')
+	    for dir in $dirs; do rm -rf $HOME/$dir; done
+	    stow *
+    fi
 }
+
 xdg_emacs() {
-# pull latest emacs
-git -C $XDG_CONFIG_HOME/emacs pull &>/dev/null || (rm -rf $XDG_CONFIG_HOME/emacs && git clone ${GITURL}s-mahm/emacs.git $XDG_CONFIG_HOME/emacs)
-git -C $XDG_CONFIG_HOME/emacs remote set-url origin ${GITURL_SSH}:s-mahm/emacs.git
+    git -C $XDG_CONFIG_HOME/emacs pull &>/dev/null || (rm -rf $XDG_CONFIG_HOME/emacs && git clone ${GITURL}smahm006/emacs.git $XDG_CONFIG_HOME/emacs)
+    git -C $XDG_CONFIG_HOME/emacs remote set-url origin ${GITURL_SSH}:s-mahm/emacs.git
 }
 
 if [ $# -gt 0 ]; then

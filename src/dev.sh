@@ -7,22 +7,12 @@ dev_python() {
 }
 
 dev_nodejs() {
-	# set up nodesource apt repository
-	curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | sudo gpg --yes --dearmor -o /etc/apt/keyrings/nodesource.gpg
-	NODE_MAJOR=$(wget -qO- https://deb.nodesource.com | grep -Po "NODE_MAJOR=\d+" | sed 's/^.*=//')
-	sudo tee /etc/apt/sources.list.d/docker.list >/dev/null <<EOF
-deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_$NODE_MAJOR.x nodistro main
-EOF
 	sudo apt-get update
-
-	# install nodejs
 	sudo apt-get -y install nodejs
-
 	npm config set prefix "${XDG_DATA_HOME}/npm"
 	npm i -g bash-language-server
 	npm i -g yaml-language-server
 	npm i -g vls
-
 }
 
 dev_go() {
@@ -73,17 +63,15 @@ dev_rust() {
 }
 
 dev_docker() {
-	# set up docker's apt repository
-	sudo install -m 0755 -d /etc/apt/keyrings
-	curl -fsSL https://download.docker.com/linux/debian/gpg | sudo gpg --yes --dearmor -o /etc/apt/keyrings/docker.gpg
-	sudo chmod a+r /etc/apt/keyrings/docker.gpg
-	sudo tee /etc/apt/sources.list.d/docker.list >/dev/null <<EOF
-deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian  $latest_stable_debian stable
-EOF
-	sudo apt-get update
-
-	# install docker
-	sudo apt-get -y install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+    cd /tmp
+    curl -fsSL https://get.docker.com -o install-docker.sh
+    if sh install-docker.sh --dry-run; then
+        sudo sh install-docker.sh
+        sudo groupadd docker
+        sudo usermod -aG docker $USER
+    else
+        error "Docker not installed"
+    fi
 }
 
 dev_vagrant() {
@@ -96,12 +84,6 @@ EOF
 
 	# install vagrant
 	sudo apt install -y vagrant
-
-	# start virtualbox service
-	if ! sudo systemctl start virtualbox; then
-		sudo apt install --reinstall linux-headers-$(uname -r) virtualbox-dkms dkms
-		sudo systemctl start virtualbox
-	fi
 }
 
 if [ $# -gt 0 ]; then

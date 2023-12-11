@@ -20,7 +20,7 @@ parser_definition() {
     cmd dev  -- "install development languages and toolchains"
     cmd env -- "configure environment for i3wm"
     cmd packages  -- "update required packages to latest"
-    cmd puge  -- "remove any unwanted directories"
+    cmd purge  -- "remove any unwanted directories"
     cmd xdg -- "ensure xdg directories and github repos exist"
 }
 

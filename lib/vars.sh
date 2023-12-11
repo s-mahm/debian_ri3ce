@@ -3,7 +3,7 @@ EMAIL=soh.mahmood@tutanota.com
 if [ -z "$TOKEN" ]; then
     GITURL="git@github.com:"
 else
-    GITURL="https://smahm:$TOKEN@github.com/"
+    GITURL="https://smahm006:$TOKEN@github.com/"
 fi
 GITURL_SSH="git@github.com"
 
@@ -17,4 +17,3 @@ OFFICE="$HOME/office"
 DUMP="$HOME/dump"
 MEDIA="$HOME/media"
 APPLICATIONS="$HOME/apps"
-VAULT="$HOME/vault"

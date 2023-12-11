@@ -20,7 +20,7 @@ Commands:
   dev       install development languages and toolchains
   env       configure environment for i3wm
   packages  update required packages to latest
-  puge      remove any unwanted directories
+  purge      remove any unwanted directories
   xdg       ensure xdg directories and github repos exist
 ```
 

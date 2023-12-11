@@ -29,7 +29,6 @@ keep_home=(
 	".mozilla"
 	"office"
 	".ssh"
-	"vault"
 	"workstation"
 )
 keep "$HOME" "${keep_home[@]}"
@@ -63,7 +62,6 @@ keep_xdg_config=(
 	"rofi"
 	"systemd"
 	"user-dirs.dirs"
-	"VirtualBox"
 	"wgetrc"
 	"X11"
 	"zathura"

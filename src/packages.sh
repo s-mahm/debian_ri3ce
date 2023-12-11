@@ -70,6 +70,7 @@ apt_install \
 	mediainfo \
 	usbutils \
 	udevil \
+    scdaemon \
 	xclip \
 	trash-cli \
 	pinentry-tty \
@@ -127,6 +128,7 @@ apt_install \
 # application packages
 apt_install \
 	vim \
+    flatpak \
 	libreoffice-base \
 	gparted \
 	firefox \
@@ -156,10 +158,7 @@ apt_install \
 	python3-venv \
 	python3-pip \
 	clangd \
-	enchant-2 \
-	virtualbox \
-	virtualbox-ext-pack \
-	virtualbox-dkms \
+	enchant-2
 	jq \
 	yq \
 	yamllint
@@ -193,4 +192,4 @@ apt_install \
 	fonts-liberation
 
 # clean up lingering packages
-sudo apt-get -y autoremove
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y autoremove
