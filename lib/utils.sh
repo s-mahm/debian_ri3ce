@@ -1,12 +1,3 @@
-check_cmd() {
-    if [ ! "$(command -v "$1")" ]; then
-        app=$1
-        redprint "It seems like you don't have ${app}."
-        redprint "Please install ${app}."
-        exit 1
-    fi
-}
-
 ### Colors ##
 ESC=$(printf '\033')
 RESET="${ESC}[0m"
@@ -41,6 +32,15 @@ error() {
 
 version() {
     echo "$@" | awk -F. '{ printf("%d%03d%03d%03d\n", $1,$2,$3,$4); }';
+}
+
+check_cmd() {
+    if [ ! "$(command -v "$1")" ]; then
+        app=$1
+        redprint "It seems like you don't have ${app}."
+        redprint "Please install ${app}."
+        exit 1
+    fi
 }
 
 function_list_parser() {

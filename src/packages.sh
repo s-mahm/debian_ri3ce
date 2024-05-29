@@ -13,12 +13,6 @@ apt_install() {
 	fi
 }
 
-# Add non-free and contrib to debian sources
-sudo tee /etc/apt/sources.list >/dev/null <<EOF
-deb http://deb.debian.org/debian/ unstable main contrib non-free non-free-firmware
-deb-src http://deb.debian.org/debian/ unstable main contrib non-free non-free-firmware
-EOF
-
 sudo apt-get update
 sudo apt-get -y upgrade
 
@@ -135,8 +129,6 @@ apt_install \
 	qbittorrent \
 	sxiv \
 	wine \
-	gnome-keyring \
-	seahorse \
 	blueman \
 	zathura
 
@@ -168,28 +160,6 @@ apt_install \
 	adb \
 	fastboot \
 	heimdall-flash
-
-# font packages
-apt_install \
-	fonts-cantarell \
-	fonts-dejavu \
-	fonts-noto \
-	fonts-noto-cjk \
-	fonts-noto-cjk-extra \
-	fonts-noto-color-emoji \
-	fonts-noto-extra \
-	fonts-noto-hinted \
-	fonts-noto-mono \
-	fonts-noto-unhinted \
-	fonts-roboto \
-	fonts-ubuntu \
-	fonts-ubuntu-console \
-	fonts-font-awesome \
-	fonts-lato \
-	fonts-opensymbol \
-	fonts-hack-ttf \
-	fonts-font-awesome \
-	fonts-liberation
 
 # clean up lingering packages
 sudo DEBIAN_FRONTEND=noninteractive apt-get -y autoremove

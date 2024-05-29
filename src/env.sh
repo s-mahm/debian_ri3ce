@@ -1,64 +1,91 @@
-# create fonts folder
-sudo mkdir -p /usr/share/fonts
+# install Fontawesome fonts if absent
+if ! fc-list | grep Fontawesome; then
+	mkdir -p $XDG_DATA_HOME/fonts/Fontawesome
+	rm -rf /tmp/fontawesome*
+	latest_fontawesome=$(curl -sL \
+		https://fontawesome.com/versions |
+		grep -Po '\d+\.\d+\.*\d*' |
+		head -n1)
+	wget "https://use.fontawesome.com/releases/v$latest_fontawesome/fontawesome-free-$latest_fontawesome-desktop.zip" -P /tmp
+	unzip -j /tmp/fontawesome-*.zip -d $XDG_DATA_HOME/fonts/Fontawesome
+	find $XDG_DATA_HOME/fonts/Fontawesome -type f ! -name '*.otf' -delete
+	fc-cache -f -v &>/dev/null
+fi
 
-# install feather fonts if absent
-if ! fc-list | grep feather; then
-	sudo mkdir -p /usr/share/fonts/feather
-	rm -rf /tmp/featherfont
+# install Feather fonts if absent
+if ! fc-list | grep Feather; then
+	mkdir -p $XDG_DATA_HOME/fonts/Feather
+	rm -rf /tmp/featherfont*
 	git clone https://github.com/AT-UI/feather-font /tmp/featherfont
-	sudo mv /tmp/featherfont/src/fonts/feather.ttf /usr/share/fonts/feather
+	sudo mv /tmp/featherfont/src/fonts/feather.ttf $XDG_DATA_HOME/fonts/Feather
 	fc-cache -f -v &>/dev/null
 fi
 
-# install menlo font if absent
-if ! fc-list | grep menlo; then
-	sudo mkdir -p /usr/share/fonts/menlo
-	rm -rf /tmp/featherfont
-	git clone https://github.com/hbin/top-programming-fonts.git /tmp/menlo
-	sudo mv /tmp/menlo/Menlo-Regular.ttf /usr/share/fonts/menlo
+# install JetBrainsMono Nerd Font if absent
+if ! fc-list | grep JetBrainsMono; then
+	sudo mkdir -p $XDG_DATA_HOME/fonts/JetBrainsMono
+	rm -rf /tmp/JetBrainsMono*
+	wget $(
+		curl https://api.github.com/repos/ryanoasis/nerd-fonts/releases/
+		latest | grep JetBrainsMono | grep -P download.*\.zip |
+			sed 's/"browser_download_url":\s*//' | tr -d '"'
+	) -P /tmp
+	unzip /tmp/JetBrainsMono.zip -d $XDG_DATA_HOME/fonts/JetBrainsMono
 	fc-cache -f -v &>/dev/null
 fi
 
-# install papirus icons if absent
-if ! ls /usr/share/icons | grep Papirus; then
-	wget -qO- https://git.io/papirus-icon-theme-install | sh
+# install Hack Nerd Font if absent
+if ! fc-list | grep Hack; then
+	mkdir -p $XDG_DATA_HOME/fonts/Hack
+	rm -rf /tmp/Hack*
+	wget $(
+		curl https://api.github.com/repos/ryanoasis/nerd-fonts/releases/
+		latest | grep Hack | grep -P download.*\.zip |
+			sed 's/"browser_download_url":\s*//' | tr -d '"'
+	) -P /tmp
+	unzip /tmp/Hack.zip -d $XDG_DATA_HOME/fonts/Hack
+	fc-cache -f -v &>/dev/null
 fi
 
-# install phinger-cursor if absent
-if ! ls /usr/share/icons | grep phinger-cursors; then
-	wget -cO- https://github.com/phisch/phinger-cursors/releases/latest/download/phinger-cursors-variants.tar.bz2 | sudo tar -xjf - -C /usr/share/icons/
+# install phinger-cursor icons  if absent
+if ! ls $XDG_DATA_HOME/icons | grep phinger-cursors; then
+	wget -cO- https://github.com/phisch/phinger-cursors/releases/latest/download/phinger-cursors-variants.tar.bz2 | tar -xjf - -C $XDG_DATA_HOME/icons/
 fi
 
-# install equilix theme if absent
-if ! ls /usr/share/themes | grep Equilux; then
-	sudo rm -rf /tmp/equilux*
-	wget -cO- https://github.com/ddnexus/equilux-theme/archive/refs/tags/equilux-v20181029.tar.gz | sudo tar -xzf - -C /tmp/
-	cd /tmp/equilux*
-	sudo bash install.sh
+# install Tela icons if absent
+if ! ls $XDG_DATA_HOME/icons | grep Tela; then
+	git clone https://github.com/vinceliuice/Tela-icon-theme.git /tmp/Tela-icon-theme
+	bash /tmp/Tela-icon-thme/install.sh -d $XDG_DATA_HOME/icons
+fi
+
+# install Jasper icons if absent
+if ! ls $XDG_DATA_HOME/themes | grep Jasper; then
+	git clone https://github.com/vinceliuice/Jasper-gtk-theme.git /tmp/Jasper-gtk-theme
+	bash /tmp/Jasper-gtk-theme/install.sh -d $XDG_DATA_HOME/themes
 fi
 
 # set gtk theme settings
 mkdir -p $XDG_CONFIG_HOME/gtk-3.0
 tee $XDG_CONFIG_HOME/gtk-3.0/settings.ini >/dev/null <<EOF
 [Settings]
-gtk-theme-name=Equilix-compact
-gtk-icon-theme-name=Papirus-Dark
+gtk-theme-name=Jasper-Dark
+gtk-icon-theme-name=Tela-dark
 gtk-font-name=Sans 10
 gtk-cursor-theme-name=phinger-cursors
 gtk-cursor-theme-size=0
-gtk-toolbar-style=GTK_TOOLBAR_BOTH
+gtk-toolbar-style=GTK_TOOLBAR_BOTH_HORIZ
 gtk-toolbar-icon-size=GTK_ICON_SIZE_LARGE_TOOLBAR
-gtk-button-images=1
-gtk-menu-images=1
+gtk-button-images=0
+gtk-menu-images=0
 gtk-enable-event-sounds=1
 gtk-enable-input-feedback-sounds=1
 gtk-xft-antialias=1
 gtk-xft-hinting=1
-gtk-xft-hintstyle=hintfull
+gtk-xft-hintstyle=hintmedium
 EOF
 
 # set default wallpaper
-if ! [ -z "$TOKEN" ]; then
+if ! [ -z "$NEW" ]; then
 	wget -q https://i.imgur.com/NEO3Shg.jpg -O $MEDIA/pictures/wallpapers/currentwallpaper.jpg
 fi
 

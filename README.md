@@ -10,7 +10,6 @@ Usage: setup [options]... [arguments]...
 
 Options:
   -f, --force                 force install
-  -t, --token TOKEN           github token to clone repositories
   -h, --help
   -v, --version
 

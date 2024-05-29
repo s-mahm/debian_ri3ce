@@ -5,6 +5,9 @@ mkdir -p $XDG_DATA_HOME/gnupg
 mkdir -p $XDG_DATA_HOME/python
 mkdir -p $XDG_DATA_HOME/npm
 mkdir -p $XDG_DATA_HOME/wine
+mkdir -p $XDG_DATA_HOME/fonts
+mkdir -p $XDG_DATA_HOME/icons
+mkdir -p $XDG_DATA_HOME/themes
 mkdir -p $XDG_DATA_HOME/terminfo
 mkdir -p $XDG_DATA_HOME/.pki
 mkdir -p $XDG_CONFIG_HOME
@@ -50,13 +53,13 @@ mkdir -p $MEDIA/pictures/screenshots
 mkdir -p $MEDIA/pictures/misc
 mkdir -p $MEDIA/videos
 
-# create office (documents) directory
-mkdir -p $OFFICE
-mkdir -p $OFFICE/documents
-mkdir -p $OFFICE/misc
-mkdir -p $OFFICE/books
-mkdir -p $OFFICE/backup
-mkdir -p $OFFICE/proffesional
+# create org directory
+mkdir -p $ORG
+mkdir -p $ORG/documents
+mkdir -p $ORG/misc
+mkdir -p $ORG/books
+mkdir -p $ORG/backup
+mkdir -p $ORG/proffesional
 
 # create apps directory
 mkdir -p $APPLICATIONS
@@ -90,7 +93,7 @@ XDG_DESKTOP_DIR="$HOME"
 XDG_DOWNLOAD_DIR="$HOME/dump"
 XDG_TEMPLATES_DIR="$HOME"
 XDG_PUBLICSHARE_DIR="$HOME"
-XDG_DOCUMENTS_DIR="$OFFICE"
+XDG_DOCUMENTS_DIR="$ORG"
 XDG_MUSIC_DIR="$MEDIA/audio"
 XDG_PICTURES_DIR="$MEDIA/pictures"
 XDG_VIDEOS_DIR="$MEDIA/videos"
@@ -100,13 +103,11 @@ xdg-user-dirs-update
 
 xdg_cbins() {
     git -C /usr/local/cbins pull &>/dev/null || (sudo rm -rf /usr/local/cbins && git clone ${GITURL}smahm006-private/cbins.git /tmp/cbins && sudo mv /tmp/cbins /usr/local/cbins)
-    git -C /usr/local/cbins remote set-url origin ${GITURL_SSH}:smahm006-private/cbins.git
 }
 
 xdg_dotfiles() {
     set -e
     git -C $HOME/.dotfiles pull &>/dev/null || (rm -rf $HOME/.dotfiles && git clone ${GITURL}smahm006-private/.dotfiles.git $HOME/.dotfiles)
-    git -C $HOME/.dotfiles remote set-url origin ${GITURL_SSH}:smahm006-private/.dotfiles.git
     cd $HOME/.dotfiles
     if ! stow * &>/dev/null; then
 	    dirs=$(stow * 2>&1 | grep "existing target is neither a link nor a directory:" | sed 's/^.*: //')
@@ -117,7 +118,6 @@ xdg_dotfiles() {
 
 xdg_emacs() {
     git -C $XDG_CONFIG_HOME/emacs pull &>/dev/null || (rm -rf $XDG_CONFIG_HOME/emacs && git clone ${GITURL}smahm006/emacs.git $XDG_CONFIG_HOME/emacs)
-    git -C $XDG_CONFIG_HOME/emacs remote set-url origin ${GITURL_SSH}:s-mahm/emacs.git
 }
 
 if [ $# -gt 0 ]; then

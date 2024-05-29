@@ -93,20 +93,8 @@ apps_yubikey() {
     sudo apt install yubikey-manager-qt
 }
 
-apps_tutanota() {
-    flatpak install flathub com.tutanota.Tutanota
-}
-
-apps_whatsapp() {
-    flatpak install flathub io.github.mimbrero.WhatsAppDesktop
-}
-
 apps_bitwarden() {
     flatpak install flathub com.bitwarden.desktop
-}
-
-apps_obsidian() {
-    flatpak install flathub md.obsidian.Obsidian
 }
 
 apps_xdgninja() {
